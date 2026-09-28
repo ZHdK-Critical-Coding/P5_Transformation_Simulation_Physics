@@ -60,6 +60,12 @@ function draw() {
 }
 
 function keyPressed() {
+  // Only single printable characters: special keys like "Shift" or "Enter"
+  // have longer names, and a space has no outline
+  if (key.length !== 1 || key === ' ') return;
   let b = new CustomShape(width / 2, -50, theFont, key);
-  shapes.push(b);
+  // Only add the shape if matter.js could build a body from the outline
+  if (b.body) {
+    shapes.push(b);
+  }
 }

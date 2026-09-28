@@ -2,7 +2,7 @@
 // Daniel Shiffman
 // http://natureofcode.com
 
-// A rectangular boundary
+// A circular boundary
 
 class Boundary {
   constructor(x, y, r) {
@@ -14,7 +14,7 @@ class Boundary {
     Composite.add(engine.world, this.body);
   }
   
-  // Drawing the box
+  // Drawing the circle
   show() {
     fill(255);
     noStroke();    

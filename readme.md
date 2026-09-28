@@ -12,14 +12,16 @@ static circles. Based on examples from
 
 Requirements: a current browser.
 
-1. Open the folder in Visual Studio Code and start Live Server (click
-   **Go Live** in the status bar).
-2. Type any key to drop that letter into the scene.
-
 To use another font, put the file (ttf/otf/woff) into `assets/` and change
 `FONT_PATH` in `sketch.js`.
 
-Libraries (in `libraries/`): p5.js 1.7.0, matter.js 0.19.0.
+Libraries (in `libraries/`): p5.js 1.7.0, matter.js 0.19.0, poly-decomp 0.3.0.
+
+## How to Run
+
+1. Open the folder in Visual Studio Code and start Live Server (click
+   **Go Live** in the status bar).
+2. Type any letter, digit or symbol to drop it into the scene.
 
 ## Coding Help
 
@@ -32,13 +34,17 @@ Libraries (in `libraries/`): p5.js 1.7.0, matter.js 0.19.0.
 - **`draw()`**: advances the physics with `Engine.update()`, draws all
   shapes and boundaries and removes shapes that fell below the canvas.
 - **`keyPressed()`**: creates a `CustomShape` for `key` at the top centre.
-  Special keys such as Shift pass their name (e.g. "Shift") as text.
+  Only single printable characters are accepted; special keys such as
+  Shift (whose `key` is "Shift") and the space bar are ignored.
 - **`shape.js` → `CustomShape`**: turns the character into points with
-  `font.textToPoints()` and builds a body with `Bodies.fromVertices()`,
+  `font.textToPoints()` (one point every 4 px, `SAMPLE_FACTOR`), splits
+  them into contours wherever there is a jump between two points (e.g. the
+  stem and the dot of "i") and builds a body with `Bodies.fromVertices()`,
   with a random sideways velocity and some spin. `restitution` sets the
-  bounciness. Without the poly-decomp library matter.js cannot split
-  concave outlines and uses their convex hull instead, which is what the
-  black outline shows. `show()` draws that outline and the red letter
-  rotated with the body.
+  bounciness. With poly-decomp (loaded in `index.html`) matter.js splits
+  each concave contour into convex parts, so the body follows the letter's
+  shape; holes like in "o" are filled. `show()` draws the outline of every
+  part (white) and the red letter rotated
+  with the body.
 - **`boundary.js` → `Boundary`**: a static circular body (`isStatic: true`)
   and its drawing.
